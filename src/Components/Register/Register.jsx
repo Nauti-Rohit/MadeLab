@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Register.css";
-import "../../App.css";
-import { Link, NavLink } from "react-router-dom";
+import "../../App.scss";
+import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
 
 // video and image
 import video from "../../LoginAssets/video.mp4";
@@ -14,6 +15,26 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
 
 export default function Register() {
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const navigateTO = useNavigate();
+
+  const createUser = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:3002/register", {
+      Email: email,
+      UserName: userName,
+      Password: password,
+    }).then(() => {
+      navigateTO("/");
+
+      setEmail("");
+      setUserName("");
+      setPassword("");
+    });
+  };
+
   return (
     <div>
       <div className="registerPage flex">
@@ -45,7 +66,14 @@ export default function Register() {
                 <label htmlFor="email">Email</label>
                 <div className="input flex">
                   <MdMarkEmailRead className="icon" />
-                  <input type="email" id="email" placeholder="Enter Email" />
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email"
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                    }}
+                  />
                 </div>
               </div>
 
@@ -57,6 +85,9 @@ export default function Register() {
                     Type="text"
                     id="username"
                     placeholder="Enter Username"
+                    onChange={(event) => {
+                      setUserName(event.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -69,11 +100,14 @@ export default function Register() {
                     Type="password"
                     id="password"
                     placeholder="Enter password"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
                   />
                 </div>
               </div>
 
-              <button className="btn flex" type="submit">
+              <button className="btn flex" type="submit" onClick={createUser}>
                 <span>Register</span>
                 <AiOutlineSwapRight className="icon" />
               </button>

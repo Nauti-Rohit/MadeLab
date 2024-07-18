@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
-import "../../App.css";
-import { Link, NavLink } from "react-router-dom";
+import "../../App.scss";
+import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
 
 // video and image
 import video from "../../LoginAssets/video.mp4";
@@ -13,6 +14,41 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
 
 export default function Login() {
+  const [loginUserName, setLoginUserName] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const navigateTO = useNavigate();
+  const [loginStatus, setLoginStatus] = useState("");
+  const [statusHolder, setStatusHolder] = useState("message");
+
+  const loginUser = (e) => {
+    e.preventDefault();
+    Axios.post("http://localhost:3002/login", {
+      LoginUserName: loginUserName,
+      LoginPassword: loginPassword,
+    }).then((res) => {
+      if (res.data.message || loginUserName == "" || loginPassword == "") {
+        navigateTO("/");
+        setLoginStatus("Credential Don't Exist");
+      } else {
+        navigateTO("/dashboard");
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (loginStatus !== "") {
+      setStatusHolder("showMessaage");
+      setTimeout(() => {
+        setStatusHolder("Messaage");
+      }, 4000);
+    }
+  }, [loginStatus]);
+
+  const onSubmit = () => {
+    setLoginUserName("");
+    setLoginPassword("");
+  };
+
   return (
     <div>
       <div className="loginPage flex">
@@ -39,16 +75,20 @@ export default function Login() {
               <h3>Welcome Back!</h3>
             </div>
 
-            <form action="" className="form grid">
-              <span className="showMessage"> Login status will go here </span>
+            <form className="form grid" onSubmit={onSubmit}>
+              <span className={statusHolder}> {loginStatus} </span>
+
               <div className="inputDiv">
                 <label htmlFor="username">Username</label>
                 <div className="input flex">
                   <FaUserShield className="icon" />
                   <input
-                    Type="text"
+                    type="text"
                     id="username"
                     placeholder="Enter Username"
+                    onChange={(event) => {
+                      setLoginUserName(event.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -58,14 +98,17 @@ export default function Login() {
                 <div className="input flex">
                   <BsFillShieldLockFill className="icon" />
                   <input
-                    Type="password"
+                    type="password"
                     id="password"
                     placeholder="Enter password"
+                    onChange={(event) => {
+                      setLoginPassword(event.target.value);
+                    }}
                   />
                 </div>
               </div>
 
-              <button className="btn flex" type="submit">
+              <button type="submit" className="btn flex" onClick={loginUser}>
                 <span>Login</span>
                 <AiOutlineSwapRight className="icon" />
               </button>
