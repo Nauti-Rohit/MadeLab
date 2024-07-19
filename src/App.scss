@@ -89,7 +89,8 @@ video {
 
 /* pages stylings */
 .loginPage,
-.registerPage {
+.registerPage,
+.dashboardPage {
   height: 100vh;
   width: 100%;
   margin: auto;
@@ -282,7 +283,8 @@ video {
 @media screen and (max-width: 602px) {
 
   .loginPage,
-  .registerPage {
+  .registerPage,
+  .dashboardPage {
     .container {
       height: 100%;
       width: 100%;
@@ -352,7 +354,8 @@ video {
 @media screen and (max-width: 678px) {
 
   .loginPage,
-  .registerPage {
+  .registerPage,
+  .dashboardPage {
     .container {
       .textDiv {
         .title {
@@ -407,7 +410,8 @@ video {
 @media screen and (max-width: 927px) {
 
   .loginPage,
-  .registerPage {
+  .registerPage,
+  .dashboardPage {
     .container {
       width: 85%;
 
