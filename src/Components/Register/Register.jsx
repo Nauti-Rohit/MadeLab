@@ -17,6 +17,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+
   const navigateTO = useNavigate();
 
   const createUser = (e) => {
@@ -25,12 +27,14 @@ export default function Register() {
       Email: email,
       UserName: userName,
       Password: password,
+      Role: role,
     }).then(() => {
       navigateTO("/");
 
       setEmail("");
       setUserName("");
       setPassword("");
+      setRole("");
     });
   };
 
@@ -61,6 +65,33 @@ export default function Register() {
             </div>
 
             <form action="" className="form grid">
+              <div className="role flex">
+                <p>Registered as &nbsp;</p>
+
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  onChange={(event) => {
+                    setRole(event.target.value);
+                  }}
+                />
+                <label class="radio" for="r1">
+                  Admin &nbsp;
+                </label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="user"
+                  onChange={(event) => {
+                    setRole(event.target.value);
+                  }}
+                />
+                <label class="radio" for="r1">
+                  User
+                </label>
+              </div>
+
               <div className="inputDiv">
                 <label htmlFor="email">Email</label>
                 <div className="input flex">
